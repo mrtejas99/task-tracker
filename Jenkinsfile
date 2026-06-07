@@ -9,35 +9,34 @@ pipeline {
             parallel {
 
                 stage('Backend') {
-
                     agent {
                         docker {
                             image 'python:3.11'
+                            args '-u root'
                         }
                     }
-
                     steps {
                         sh '''
                         cd backend
                         pip install -r requirements.txt
-                        python -m pytest -v
+                        pytest
                         '''
                     }
                 }
 
                 stage('Frontend') {
-
                     agent {
                         docker {
                             image 'node:22'
+                            args '-u root'
                         }
                     }
-
                     steps {
                         sh '''
                         cd frontend
                         npm ci
                         npm test
+                        npm run build
                         '''
                     }
                 }
