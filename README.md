@@ -16,10 +16,10 @@ This project showcases:
 
 
 
-## Architecture
+### Architecture
 ![alt text](images/pipeline.png)
 
-## Prerequisites
+### Prerequisites
 
 This guide assumes:
 
@@ -33,11 +33,11 @@ This guide assumes:
 
 
 
-# Jenkins Installation
+## Jenkins Installation
 
 Reference: https://www.jenkins.io/doc/book/installing/linux/
 
-## Install Java
+### Install Java
 
 ```bash
 sudo apt update
@@ -46,7 +46,7 @@ sudo apt install -y fontconfig openjdk-21-jre
 java -version
 ```
 
-## Add Jenkins Repository
+### Add Jenkins Repository
 
 ```bash
 sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
@@ -57,14 +57,14 @@ https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
 /etc/apt/sources.list.d/jenkins.list > /dev/null
 ```
 
-## Install Jenkins
+### Install Jenkins
 
 ```bash
 sudo apt update
 sudo apt install -y jenkins
 ```
 
-## Obtain Initial Admin Password
+### Obtain Initial Admin Password
 
 ```bash
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
@@ -80,7 +80,7 @@ Install the suggested plugins when prompted.
 
 
 
-# Docker Installation
+## Docker Installation
 
 Install Docker Engine and Docker Compose Plugin.
 
@@ -100,7 +100,7 @@ docker compose version
 
 
 
-# Configure Docker Permissions
+## Configure Docker Permissions
 
 Allow Jenkins and Ubuntu users to access the Docker daemon.
 
@@ -129,7 +129,7 @@ http://<EC2-PUBLIC-IP>:8080/restart
 
 
 
-# Jenkins Plugin Installation
+## Jenkins Plugin Installation
 
 Make sure to click on Install suggested plugins to install the necessary plugins to make to setup process simpler and just install the **Docker** and **Docker Pipeline** plugin.
 ![Default plugins installation](/images/wizard.png)
@@ -154,29 +154,29 @@ Restart Jenkins after installation.
 
 
 
-# Create Jenkins Pipeline
+## Create Jenkins Pipeline
 
 Create a new Pipeline Job and configure:
 
-## Pipeline Definition
+### Pipeline Definition
 
 ```text
 Pipeline Script from SCM
 ```
 
-## SCM
+### SCM
 
 ```text
 Git
 ```
 
-## Repository URL
+### Repository URL
 
 ```text
 https://github.com/<your-username>/task-tracker.git
 ```
 
-## Script Path
+### Script Path
 
 ```text
 Jenkinsfile
@@ -186,11 +186,11 @@ Save and build the pipeline.
 
 
 
-# Pipeline Stages
+## Pipeline Stages
 
 The pipeline performs:
 
-## 1. Backend Testing
+### 1. Backend Testing
 
 Runs inside a Python Docker container.
 
@@ -199,7 +199,7 @@ pip install -r requirements.txt
 pytest
 ```
 
-## 2. Frontend Testing
+### 2. Frontend Testing
 
 Runs inside a Node.js Docker container.
 
@@ -208,25 +208,25 @@ npm ci
 npm test
 ```
 
-## 3. Build Docker Images
+### 3. Build Docker Images
 
 ```bash
 docker compose build
 ```
 
-## 4. Deploy Application
+### 4. Deploy Application
 
 ```bash
 docker compose up -d
 ```
 
-## 5. Smoke Testing
+### 5. Smoke Testing
 
 Validates that deployed services are accessible.
 
 
 
-# Running the Application
+## Running the Application
 
 After successful deployment:
 
@@ -239,46 +239,3 @@ Backend API:
 ```text
 http://<EC2-PUBLIC-IP>:5000
 ```
-
-
-
-# Useful Commands
-
-## View Running Containers
-
-```bash
-docker ps
-```
-
-## View Logs
-
-```bash
-docker compose logs
-```
-
-## Stop Application
-
-```bash
-docker compose down
-```
-
-## Rebuild Application
-
-```bash
-docker compose up -d --build
-```
-
-
-
-# Learning Objectives
-
-This project demonstrates:
-
-- CI/CD fundamentals
-- Jenkins Declarative Pipelines
-- Parallel pipeline execution
-- Dockerized build agents
-- Docker image creation
-- Container orchestration with Docker Compose
-- Automated deployment workflows
-- Basic smoke testing strategies
